@@ -1,0 +1,38 @@
+{
+  "name": "@mixmaxhq/promise-pool",
+  "version": "1.0.0",
+  "description": "Concurrent control of functions on a per-pool basis with async/await",
+  "main": "promise-pool.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixmaxhq/promise-pool.git"
+  },
+  "keywords": [
+    "async",
+    "await",
+    "backpressure",
+    "iteration",
+    "pool",
+    "pressure",
+    "promise"
+  ],
+  "files": [
+    "promise-pool.js"
+  ],
+  "author": "Eli Skeggs <me@eliskeggs.com> (https://eliskeggs.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mixmaxhq/promise-pool/issues"
+  },
+  "homepage": "https://github.com/mixmaxhq/promise-pool#readme",
+  "dependencies": {
+    "promise-callbacks": "^2.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2"
+  }
+}

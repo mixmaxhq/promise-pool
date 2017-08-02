@@ -3,6 +3,17 @@ const { deferred } = require('promise-callbacks');
 
 const PromisePool = require('..');
 
+class Cursor {
+  constructor(array) {
+    this._array = array;
+    this._index = 0;
+  }
+
+  async next() {
+    return this._array.length === this._index ? null : this._array[this._index++];
+  }
+}
+
 describe('PromisePool', function() {
   it('should limit concurrent execution to 1', async function() {
     const ops = [];
@@ -109,17 +120,6 @@ describe('PromisePool', function() {
     expect(hits).to.equal(9);
   });
 });
-
-class Cursor {
-  constructor(array) {
-    this._array = array;
-    this._index = 0;
-  }
-
-  async next() {
-    return this._array.length === this._index ? null : this._array[this._index++];
-  }
-}
 
 function immediately() {
   return new Promise((resolve) => setImmediate(resolve));

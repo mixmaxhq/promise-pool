@@ -45,7 +45,7 @@ class PromisePool extends Emitter {
 
     ++this._numActive;
     setImmediate(() => {
-      fn(...args).then((value) => this._onJoin(null), (err) => this._onJoin(err));
+      fn(...args).then(() => this._onJoin(null), (err) => this._onJoin(err));
     });
   }
 

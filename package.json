@@ -2,9 +2,11 @@
   "name": "@mixmaxhq/promise-pool",
   "version": "1.0.0",
   "description": "Concurrent control of functions on a per-pool basis with async/await",
-  "main": "promise-pool.js",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "ava",
+    "build": "rm -rf dist/node && babel src -d dist/node",
+    "prepublishOnly": "yarn run build",
     "lint": "eslint ."
   },
   "repository": {
@@ -21,7 +23,9 @@
     "promise"
   ],
   "files": [
-    "promise-pool.js"
+    "index.js",
+    "src",
+    "dist"
   ],
   "author": "Eli Skeggs <me@eliskeggs.com> (https://eliskeggs.com)",
   "license": "MIT",
@@ -30,13 +34,17 @@
   },
   "homepage": "https://github.com/mixmaxhq/promise-pool#readme",
   "dependencies": {
-    "promise-callbacks": "^2.0.0"
+    "ava": "^0.22.0",
+    "ava-spec": "^1.1.0",
+    "promise-callbacks": "^3.0.0",
+    "semver": "^5.4.1"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "eslint": ">=3",
     "eslint-config-mixmax": "^0.6.0",
-    "mocha": "^3.4.2",
     "pre-commit": "^1.2.2"
   },
   "pre-commit": [

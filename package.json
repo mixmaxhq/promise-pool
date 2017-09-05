@@ -2,7 +2,7 @@
   "name": "@mixmaxhq/promise-pool",
   "version": "1.0.0",
   "description": "Concurrent control of functions on a per-pool basis with async/await",
-  "main": "promise-pool.js",
+  "main": "index.js",
   "scripts": {
     "test": "ava",
     "build": "rm -rf dist/node && babel src -d dist/node",

@@ -60,6 +60,8 @@ $ yarn add @mixmaxhq/promise-pool
 Changelog
 ---------
 
+* 1.1.0 Adds transpilation so it can be used in Node 6 (and prior) environments.
+
 * 1.0.0 Initial release.
 
 License

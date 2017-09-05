@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const { deferred } = require('promise-callbacks');
+import { describe } from 'ava-spec';
+import { deferred } from 'promise-callbacks';
 
 const PromisePool = require('..');
 
@@ -14,8 +14,8 @@ class Cursor {
   }
 }
 
-describe('PromisePool', function() {
-  it('should limit concurrent execution to 1', async function() {
+describe('PromisePool', (it) => {
+  it('should limit concurrent execution to 1', async (t) => {
     const ops = [];
 
     const pool = new PromisePool(1);
@@ -36,29 +36,29 @@ describe('PromisePool', function() {
 
     ops.push(3);
 
-    expect(await pool.flush()).to.deep.equal([]);
+    t.deepEqual(await pool.flush(), []);
 
     ops.push(6);
 
-    expect(ops).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
+    t.deepEqual(ops, [0, 1, 2, 3, 4, 5, 6]);
   });
 
-  it('should limit concurrent execution to 3', async function() {
+  it('should limit concurrent execution to 3', async (t) => {
     const startOrder = [], endOrder = [];
 
     const actions = new Map();
 
     async function pause(n) {
-      expect(actions.has(n)).to.be.false;
+      t.is(actions.has(n), false);
       const action = deferred();
       actions.set(n, action.defer());
       await action;
     }
 
     function resume(n) {
-      expect(actions.has(n)).to.be.true;
+      t.is(actions.has(n), true);
       const fn = actions.get(n);
-      expect(fn).to.be.a('function');
+      t.is(typeof fn, 'function');
       actions.delete(n);
       fn();
     }
@@ -92,15 +92,15 @@ describe('PromisePool', function() {
       resume(3);
     });
 
-    expect(await pool.flush()).to.deep.equal([]);
+    t.deepEqual(await pool.flush(), []);
 
     endOrder.push(5);
 
-    expect(startOrder).to.deep.equal([0, 1, 2, 3, 4]);
-    expect(endOrder).to.deep.equal([1, 2, 0, 4, 3, 5]);
+    t.deepEqual(startOrder, [0, 1, 2, 3, 4]);
+    t.deepEqual(endOrder, [1, 2, 0, 4, 3, 5]);
   });
 
-  it('should work with a cursor', async function() {
+  it('should work with a cursor', async (t) => {
     const array = [1, 2, 3, 4, 5, 6, 7, 8, 9],
       cursor = new Cursor(array);
 
@@ -110,14 +110,14 @@ describe('PromisePool', function() {
 
     for (let value; (value = await cursor.next()); ) {
       await pool.start(async () => {
-        expect(value).to.equal(array[hits++]);
+        t.is(value, array[hits++]);
         await delay((Math.random() * 10) | 0);
       });
     }
 
-    expect(await pool.flush()).to.deep.equal([]);
+    t.deepEqual(await pool.flush(), []);
 
-    expect(hits).to.equal(9);
+    t.is(hits, 9);
   });
 });
 

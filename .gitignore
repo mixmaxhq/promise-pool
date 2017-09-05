@@ -24,3 +24,4 @@ node_modules
 .node_repl_history
 .DS_Store
 *.sublime-workspace
+/dist

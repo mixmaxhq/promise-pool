@@ -34,12 +34,12 @@
   },
   "homepage": "https://github.com/mixmaxhq/promise-pool#readme",
   "dependencies": {
-    "ava": "^0.22.0",
-    "ava-spec": "^1.1.0",
     "promise-callbacks": "^3.0.0",
     "semver": "^5.4.1"
   },
   "devDependencies": {
+    "ava": "^0.25.0",
+    "ava-spec": "^1.1.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",

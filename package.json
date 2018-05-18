@@ -49,8 +49,5 @@
   },
   "pre-commit": [
     "lint"
-  ],
-  "engines": {
-    "yarn": "YARN NO LONGER USED - use npm instead."
-  }
+  ]
 }

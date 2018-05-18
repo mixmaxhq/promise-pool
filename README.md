@@ -54,7 +54,7 @@ $ npm install @mixmaxhq/promise-pool
 or
 
 ```sh
-$ yarn add @mixmaxhq/promise-pool
+$ npm i @mixmaxhq/promise-pool
 ```
 
 Changelog

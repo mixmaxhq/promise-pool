@@ -1,5 +1,5 @@
 import { describe } from 'ava-spec';
-import { deferred } from 'promise-callbacks';
+import { deferred, delay } from 'promise-callbacks';
 
 const PromisePool = require('..');
 
@@ -126,8 +126,4 @@ describe('PromisePool', (it) => {
 
 function immediately() {
   return new Promise((resolve) => setImmediate(resolve));
-}
-
-function delay(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
 }

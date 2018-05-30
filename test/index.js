@@ -1,5 +1,5 @@
 import { describe } from 'ava-spec';
-import { deferred } from 'promise-callbacks';
+import { deferred, delay } from 'promise-callbacks';
 
 const PromisePool = require('..');
 
@@ -48,11 +48,13 @@ describe('PromisePool', (it) => {
 
     const actions = new Map();
 
-    async function pause(n) {
+    function pause(n) {
       t.is(actions.has(n), false);
       const action = deferred();
       actions.set(n, action.defer());
-      await action;
+      // We can't await this action because it messes up the resolution order in Node 8 in the
+      // waiter.
+      return action;
     }
 
     function resume(n) {
@@ -68,8 +70,9 @@ describe('PromisePool', (it) => {
     function waiter(id) {
       return async () => {
         startOrder.push(id);
-        await pause(id);
-        endOrder.push(id);
+        // We used to just use await here, but then a Node 8 regression caused:
+        // https://github.com/mixmaxhq/promise-pool/issues/5
+        await pause(id).then(() => endOrder.push(id));
       };
     }
 
@@ -123,8 +126,4 @@ describe('PromisePool', (it) => {
 
 function immediately() {
   return new Promise((resolve) => setImmediate(resolve));
-}
-
-function delay(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
 }

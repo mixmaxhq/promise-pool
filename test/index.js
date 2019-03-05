@@ -122,6 +122,49 @@ describe('PromisePool', (it) => {
 
     t.is(hits, 9);
   });
+
+  it('should guard against lack of backpressure', async (t) => {
+    const array = [1, 2, 3, 4, 5];
+
+    const pool = new PromisePool(2);
+
+    const res = [];
+
+    // It doesn't really matter where the error happens, just that it happens.
+    res.push((async () => {
+      array.forEach(() => res.push(pool.start(async () => {})));
+    })());
+
+    await t.throws(Promise.all(res), /cannot queue function in pool/);
+  });
+
+  it('should allow more than one pending start', async (t) => {
+    const array = [1, 2, 3, 4, 5];
+
+    const pool = new PromisePool({numConcurrent: 2, maxPending: 2});
+
+    async function useArray() {
+      for (const item of array) {
+        await pool.start(async () => {}, item);
+      }
+    }
+
+    await t.notThrows(Promise.all([useArray(), useArray()]));
+  });
+
+  it('should restrict excessive pending usage', async (t) => {
+    const array = [1, 2, 3, 4, 5];
+
+    const pool = new PromisePool({numConcurrent: 2, maxPending: 2});
+
+    async function useArray() {
+      for (const item of array) {
+        await pool.start(async () => {}, item);
+      }
+    }
+
+    await t.throws(Promise.all([useArray(), useArray(), useArray()]), /cannot queue function in pool/);
+  });
 });
 
 function immediately() {

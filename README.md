@@ -183,13 +183,17 @@ async function initializeAllUsers() {
 
 async function startJobs(pool, users) {
   await asyncIterate(users, async (user) => {
-    await queue.publish(user);
+    await pool.start(async () => {
+      await queue.publish(user);
+    });
   });
 }
 
 async function sendEmails(pool, users) {
   await asyncIterate(users, async (user) => {
-    await sendEmail(user);
+    await pool.start(async () => {
+      await sendEmail(user);
+    });
   });
 }
 ```

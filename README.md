@@ -102,6 +102,8 @@ async function startJobs() {
 
   // _.each doesn't wait on the promise returned by each invocation, so it
   // won't apply backpressure to the loop in the manner pool.start expects.
+  // This will also not catch any error raised by pool.start, and will cause
+  // recent versions of Node to crash due to an unhandled rejection!
   _.each(users, async (user) => {
     await pool.start(async () => {
       await queue.publish(user);

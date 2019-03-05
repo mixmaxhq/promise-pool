@@ -64,7 +64,7 @@ $ npm i @mixmaxhq/promise-pool
 Changelog
 ---------
 
-* 1.2.0 Add `maxPending` option to avoid problematic usage (see new [Troubleshooting](#troubleshooting) section)
+* 2.0.0 Add `maxPending` option to avoid problematic usage (see new [Troubleshooting](#troubleshooting) section)
 
 * 1.1.1 Move `ava` and `ava-spec` to `devDependencies`.
 

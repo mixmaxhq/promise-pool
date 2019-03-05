@@ -77,7 +77,9 @@ Troubleshooting
 
 ### `cannot queue function in pool`
 
-If you're getting this error, then one of two things is happening:
+If you're getting this error, then you're calling `start` too many times
+concurrently without waiting for the previous `start` call to resolve. Please
+read on - one of two things is happening:
 
 - you're using promise-pool in a way that will defeat its purpose
 - you're using promise-pool in an uncommon manner that works with its purpose (but might benefit from being refactored)

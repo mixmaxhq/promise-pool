@@ -49,7 +49,7 @@ class PromisePool extends Emitter {
     if (this._numActive >= this._numConcurrent) {
       if (this._pending.length >= this._maxPending) {
         // the pool is likely being used in a manner that does not propagate backpressure
-        throw new Error('cannot queue function in pool: please read the documentation');
+        throw new Error('cannot queue function in pool, too many pending invocations: please see the documentation');
       }
       const task = deferred();
       this._pending.push(task.defer());

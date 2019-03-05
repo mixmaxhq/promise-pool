@@ -7,12 +7,21 @@ class PromisePool extends Emitter {
    *
    * You should _only_ #flush() after you've have no more functions to start.
    *
-   * @param {Number} concurrentFactor The maximum number of functions to let run concurrently.
+   * @param {Number=} options.numConcurrent The maximum number of functions to let run concurrently.
+   * @param {Number=} options.maxPending The maximum number of pending functions to allow in the
+   *   pending queue, in an attempt to forbid use of promise-pool in incorrect ways.
    */
-  constructor(concurrentFactor) {
+  constructor(options) {
     super();
 
-    this._numConcurrent = asPositiveInteger(concurrentFactor, 4, 1);
+    if (!options) {
+      options = {};
+    } else if (typeof options !== 'object') {
+      options = {numConcurrent: options};
+    }
+
+    this._maxPending = asPositiveInteger(options.maxPending, 1, 1);
+    this._numConcurrent = asPositiveInteger(options.numConcurrent, 4, 1);
     this._numActive = 0;
     this._isDone = false;
     this._waitingDone = false;
@@ -38,6 +47,9 @@ class PromisePool extends Emitter {
     }
 
     if (this._numActive >= this._numConcurrent) {
+      if (this._pending.length >= this._maxPending) {
+        throw new Error('cannot queue function in pool: the pool is likely being used in a manner that does not propagate backpressure');
+      }
       const task = deferred();
       this._pending.push(task.defer());
       await task;

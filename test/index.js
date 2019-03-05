@@ -123,7 +123,7 @@ describe('PromisePool', (it) => {
     t.is(hits, 9);
   });
 
-  it('should disallow poor usage', async (t) => {
+  it('should guard against lack of backpressure', async (t) => {
     const array = [1, 2, 3, 4, 5];
 
     const pool = new PromisePool(2);
@@ -138,7 +138,7 @@ describe('PromisePool', (it) => {
     await t.throws(Promise.all(res), /cannot queue function in pool/);
   });
 
-  it('should allow strange usage', async (t) => {
+  it('should allow more than one pending start', async (t) => {
     const array = [1, 2, 3, 4, 5];
 
     const pool = new PromisePool({numConcurrent: 2, maxPending: 2});
@@ -152,7 +152,7 @@ describe('PromisePool', (it) => {
     await t.notThrows(Promise.all([useArray(), useArray()]));
   });
 
-  it('should restrict strange usage', async (t) => {
+  it('should restrict excessive pending usage', async (t) => {
     const array = [1, 2, 3, 4, 5];
 
     const pool = new PromisePool({numConcurrent: 2, maxPending: 2});

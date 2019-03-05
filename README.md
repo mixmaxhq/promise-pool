@@ -78,11 +78,10 @@ Troubleshooting
 ### `cannot queue function in pool`
 
 If you're getting this error, then you're calling `start` too many times
-concurrently without waiting for the previous `start` call to resolve. Please
-read on - one of two things is happening:
+concurrently. Please read on - one of two things is happening:
 
-- you're using promise-pool in a way that will defeat its purpose
-- you're using promise-pool in an uncommon manner that works with its purpose (but might benefit from being refactored)
+- you're not waiting for the previous `start` call to resolve before calling `start` again
+- you're adding items to the pool in multiple places
 
 In the former case, you probably have code that looks like this:
 
@@ -159,8 +158,9 @@ async function startJobs() {
 }
 ```
 
-The other case is where you're using `promise-pool` in an unorthodox manner,
-where you'll need to use `maxPending`:
+The other case is where you're using `promise-pool` in multiple places, and
+thus you'll need to use `maxPending` to tell `promise-pool` that you know what
+you're doing:
 
 ```js
 async function initializeAllUsers() {

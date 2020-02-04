@@ -4,10 +4,11 @@
   "description": "Concurrent control of functions on a per-pool basis with async/await",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
     "build": "rm -rf dist/node && babel src -d dist/node",
+    "ci": "npm run lint && npm test",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build",
-    "lint": "eslint ."
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -38,16 +39,14 @@
     "semver": "^5.4.1"
   },
   "devDependencies": {
+    "@mixmaxhq/prettier-config": "^1.0.0",
     "ava": "^0.25.0",
     "ava-spec": "^1.1.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "eslint": ">=3",
-    "eslint-config-mixmax": "^0.6.0",
-    "pre-commit": "^1.2.2"
-  },
-  "pre-commit": [
-    "lint"
-  ]
+    "eslint": "^6.8.0",
+    "eslint-config-mixmax": "^3.4.0",
+    "prettier": "^1.19.1"
+  }
 }

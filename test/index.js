@@ -44,7 +44,8 @@ describe('PromisePool', (it) => {
   });
 
   it('should limit concurrent execution to 3', async (t) => {
-    const startOrder = [], endOrder = [];
+    const startOrder = [],
+      endOrder = [];
 
     const actions = new Map();
 
@@ -131,9 +132,11 @@ describe('PromisePool', (it) => {
     const res = [];
 
     // It doesn't really matter where the error happens, just that it happens.
-    res.push((async () => {
-      array.forEach(() => res.push(pool.start(async () => {})));
-    })());
+    res.push(
+      (async () => {
+        array.forEach(() => res.push(pool.start(async () => {})));
+      })()
+    );
 
     await t.throws(Promise.all(res), /cannot queue function in pool/);
   });
@@ -141,7 +144,7 @@ describe('PromisePool', (it) => {
   it('should allow more than one pending start', async (t) => {
     const array = [1, 2, 3, 4, 5];
 
-    const pool = new PromisePool({numConcurrent: 2, maxPending: 2});
+    const pool = new PromisePool({ numConcurrent: 2, maxPending: 2 });
 
     async function useArray() {
       for (const item of array) {
@@ -155,7 +158,7 @@ describe('PromisePool', (it) => {
   it('should restrict excessive pending usage', async (t) => {
     const array = [1, 2, 3, 4, 5];
 
-    const pool = new PromisePool({numConcurrent: 2, maxPending: 2});
+    const pool = new PromisePool({ numConcurrent: 2, maxPending: 2 });
 
     async function useArray() {
       for (const item of array) {
@@ -163,7 +166,10 @@ describe('PromisePool', (it) => {
       }
     }
 
-    await t.throws(Promise.all([useArray(), useArray(), useArray()]), /cannot queue function in pool/);
+    await t.throws(
+      Promise.all([useArray(), useArray(), useArray()]),
+      /cannot queue function in pool/
+    );
   });
 });
 

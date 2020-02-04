@@ -17,7 +17,7 @@ class PromisePool extends Emitter {
     if (!options) {
       options = {};
     } else if (typeof options !== 'object') {
-      options = {numConcurrent: options};
+      options = { numConcurrent: options };
     }
 
     this._maxPending = asPositiveInteger(options.maxPending, 1, 1);
@@ -49,7 +49,9 @@ class PromisePool extends Emitter {
     if (this._numActive >= this._numConcurrent) {
       if (this._pending.length >= this._maxPending) {
         // the pool is likely being used in a manner that does not propagate backpressure
-        throw new Error('too many pending invocations: please look for "cannot queue function in pool" in the documentation');
+        throw new Error(
+          'too many pending invocations: please look for "cannot queue function in pool" in the documentation'
+        );
       }
       const task = deferred();
       this._pending.push(task.defer());
@@ -58,7 +60,10 @@ class PromisePool extends Emitter {
 
     ++this._numActive;
     setImmediate(() => {
-      fn(...args).then(() => this._onJoin(null), (err) => this._onJoin(err));
+      fn(...args).then(
+        () => this._onJoin(null),
+        (err) => this._onJoin(err)
+      );
     });
   }
 
@@ -95,8 +100,6 @@ class PromisePool extends Emitter {
     }
   }
 }
-
-
 
 /**
  * Coerce the input to a positive integer.

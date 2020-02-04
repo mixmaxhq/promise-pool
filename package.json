@@ -4,10 +4,11 @@
   "description": "Concurrent control of functions on a per-pool basis with async/await",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
     "build": "rm -rf dist/node && babel src -d dist/node",
+    "ci": "npm run lint && npm test",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build",
-    "lint": "eslint ."
+    "test": "ava"
   },
   "repository": {
     "type": "git",

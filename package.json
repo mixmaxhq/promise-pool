@@ -35,12 +35,12 @@
   },
   "homepage": "https://github.com/mixmaxhq/promise-pool#readme",
   "dependencies": {
-    "promise-callbacks": "^3.0.0",
+    "promise-callbacks": "^3.6.0",
     "semver": "^5.4.1"
   },
   "devDependencies": {
     "@mixmaxhq/prettier-config": "^1.0.0",
-    "ava": "^0.25.0",
+    "ava": "^3.3.0",
     "ava-spec": "^1.1.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

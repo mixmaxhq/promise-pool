@@ -1,5 +1,5 @@
 const Emitter = require('events').EventEmitter;
-const { deferred } = require('promise-callbacks');
+const { deferred, defer } = require('promise-callbacks');
 
 class PromisePool extends Emitter {
   /**
@@ -59,12 +59,20 @@ class PromisePool extends Emitter {
     }
 
     ++this._numActive;
+    const resultDefer = defer();
     setImmediate(() => {
       fn(...args).then(
-        () => this._onJoin(null),
-        (err) => this._onJoin(err)
+        (data) => {
+          this._onJoin(null);
+          resultDefer.resolve(data);
+        },
+        (err) => {
+          this._onJoin(err);
+          resultDefer.reject(err);
+        }
       );
     });
+    return { result: resultDefer.promise };
   }
 
   /**

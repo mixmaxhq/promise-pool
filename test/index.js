@@ -1,5 +1,5 @@
-import { describe } from 'ava-spec';
-import { deferred, delay } from 'promise-callbacks';
+const { describe } = require('ava-spec');
+const { deferred, delay } = require('promise-callbacks');
 
 const PromisePool = require('..');
 
@@ -138,7 +138,7 @@ describe('PromisePool', (it) => {
       })()
     );
 
-    await t.throws(Promise.all(res), /cannot queue function in pool/);
+    await t.throwsAsync(Promise.all(res), { message: /cannot queue function in pool/ });
   });
 
   it('should allow more than one pending start', async (t) => {
@@ -152,7 +152,7 @@ describe('PromisePool', (it) => {
       }
     }
 
-    await t.notThrows(Promise.all([useArray(), useArray()]));
+    await t.notThrowsAsync(Promise.all([useArray(), useArray()]));
   });
 
   it('should restrict excessive pending usage', async (t) => {
@@ -166,10 +166,24 @@ describe('PromisePool', (it) => {
       }
     }
 
-    await t.throws(
+    await t.throwsAsync(
       Promise.all([useArray(), useArray(), useArray()]),
-      /cannot queue function in pool/
+        { message: /cannot queue function in pool/ }
     );
+  });
+
+  describe('start', (it) => {
+    it('returns a promise resolving to a { result } object which resolves/rejects to what the function does', async (t) => {
+      const pool = new PromisePool({ numConcurrent: 1 });
+      const resolve1 = await pool.start(() => Promise.resolve(1));
+      const reject1 = await pool.start(() => Promise.reject(new Error('Error1')));
+      const resolve2 = await pool.start(() => Promise.resolve(2));
+      const reject2 = await pool.start(() => Promise.reject(new Error('Error2')));
+      t.is(await resolve1.result, 1);
+      await t.throwsAsync(reject1.result, { message: 'Error1' });
+      t.is(await resolve2.result, 2);
+      await t.throwsAsync(reject2.result, { message: 'Error2' });
+    });
   });
 });
 

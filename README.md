@@ -137,7 +137,7 @@ async function startJobs() {
 Or even better, couple this with a call to `promise-iterate` to only load users as you need them:
 
 ```js
-import {asyncIterate} from 'promise-iterate';
+import promiseIterate from 'promise-iterate';
 
 async function startJobs() {
   const pool = new PromisePool({numConcurrent: 4});
@@ -146,7 +146,7 @@ async function startJobs() {
 
   // promise-iterate correctly applies backpressure, and helpfully iterates
   // the cursor without pulling in all results as an array.
-  await asyncIterate(users, async (user) => {
+  await promiseIterate(users, async (user) => {
     // The await still applies to the `startJobs` async function due to the
     // behavior of promise-iterate.
     await pool.start(async () => {
@@ -186,7 +186,7 @@ async function initializeAllUsers() {
 }
 
 async function startJobs(pool, users) {
-  await asyncIterate(users, async (user) => {
+  await promiseIterate(users, async (user) => {
     await pool.start(async () => {
       await queue.publish(user);
     });
@@ -194,7 +194,7 @@ async function startJobs(pool, users) {
 }
 
 async function sendEmails(pool, users) {
-  await asyncIterate(users, async (user) => {
+  await promiseIterate(users, async (user) => {
     await pool.start(async () => {
       await sendEmail(user);
     });

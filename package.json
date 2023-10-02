@@ -39,7 +39,7 @@
     "semver": "^5.4.1"
   },
   "devDependencies": {
-    "@mixmaxhq/prettier-config": "^1.0.0",
+    "@mixmaxhq/prettier-config": "^1.1.0",
     "ava": "^0.25.0",
     "ava-spec": "^1.1.1",
     "babel-cli": "^6.26.0",

@@ -1,0 +1,16 @@
+name: continuous-integration
+'on':
+  push:
+    branches:
+      - alpha
+      - beta
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  default:
+    uses: mixmaxhq/github-workflows/.github/workflows/npm_module.yml@main
+    with:
+      coverage_threshold: 40
+    secrets: inherit

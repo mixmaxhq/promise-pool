@@ -1,5 +1,4 @@
-promise-pool
-============
+# promise-pool
 
 Concurrent control of async function invocation with a pool-like abstraction. Implicitly applies
 backpressure to the imperative task producer.
@@ -11,11 +10,11 @@ import PromisePool from '@mixmaxhq/promise-pool';
 
 async function sample() {
   // Cap the concurrent function execution at 10.
-  const pool = new PromisePool({numConcurrent: 10});
+  const pool = new PromisePool({ numConcurrent: 10 });
 
   // Call an async function 1000000 times. The pool ensures that no more than
   // 10 will be executing at a time.
-  for (let i = 0; i < 1000000; ++i) {
+  for (const i = 0; i < 1000000; ++i) {
     // The await suspends the for loop until the function has started.
     await pool.start(async (i) => {
       await sendResult(await getResult(i));
@@ -46,8 +45,7 @@ has built-in backpressure, to simplify writing concurrent code that avoids loadi
 memory. This module is a rewrite of the [synchronize-pool][] module, but instead of using
 synchronize, it uses async/await.
 
-Install
--------
+## Install
 
 We're hoping to use the `promise-pool` package name, but it's currently occupied.
 
@@ -61,19 +59,17 @@ or
 $ npm i @mixmaxhq/promise-pool
 ```
 
-Changelog
----------
+## Changelog
 
-* 2.0.0 Add `maxPending` option to avoid problematic usage (see new [Troubleshooting](#troubleshooting) section)
+- 2.0.0 Add `maxPending` option to avoid problematic usage (see new [Troubleshooting](#troubleshooting) section)
 
-* 1.1.1 Move `ava` and `ava-spec` to `devDependencies`.
+- 1.1.1 Move `ava` and `ava-spec` to `devDependencies`.
 
-* 1.1.0 Adds transpilation so it can be used in Node 6 (and prior) environments.
+- 1.1.0 Adds transpilation so it can be used in Node 6 (and prior) environments.
 
-* 1.0.0 Initial release.
+- 1.0.0 Initial release.
 
-Troubleshooting
----------------
+## Troubleshooting
 
 ### `cannot queue function in pool`
 
@@ -117,7 +113,7 @@ Instead, you need to use some iteration method that preserves backpressure, like
 
 ```js
 async function startJobs() {
-  const pool = new PromisePool({numConcurrent: 4});
+  const pool = new PromisePool({ numConcurrent: 4 });
 
   // Still severely suboptimal.
   const users = await db.users.findAsCursor().toArray();
@@ -140,7 +136,7 @@ Or even better, couple this with a call to `promise-iterate` to only load users 
 import promiseIterate from 'promise-iterate';
 
 async function startJobs() {
-  const pool = new PromisePool({numConcurrent: 4});
+  const pool = new PromisePool({ numConcurrent: 4 });
 
   const users = await db.users.findAsCursor();
 
@@ -202,8 +198,7 @@ async function sendEmails(pool, users) {
 }
 ```
 
-License
--------
+## License
 
 > The MIT License (MIT)
 >

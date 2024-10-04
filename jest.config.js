@@ -1,20 +1,16 @@
-const jestJunitConfig = process.env.CI && require('@mixmaxhq/jest-junit-config');
-
-const jestCoverageConfig = {
-  testEnvironment: 'node',
+module.exports = {
+  preset: 'ts-jest',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
-  testRegex: '/((test|spec)s?|src)/.*([Tt]est|[Ss]pec)\\.(ts|js)$',
-  coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.{ts,js}', '!src/**/*.d.ts'],
-  preset: 'ts-jest',
-};
-
-module.exports = {
   clearMocks: true,
-  ...jestJunitConfig,
-  ...jestCoverageConfig,
-  collectCoverageFrom: ['src/**/*.[tj]s', '!src/**/*.fixtures.[tj]s', '!**/src/**/*.test.[tj]s'],
+  collectCoverageFrom: ['src/**/*.js'],
+  coverageDirectory: 'coverage',
+  testRegex: '/((test|spec)s?|src)/.*([Tt]est|[Ss]pec)\\.(ts|js)$',
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^mongodbMapped$': `mongodb${process.env.DRIVER_VERSION || ''}`,
+  },
+  testTimeout: 15000,
 };

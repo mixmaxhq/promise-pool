@@ -2,6 +2,5 @@
     "extends": [
         "mixmax/node",
         "mixmax/prettier"
-    ],
-    "sourceType": "module"
+    ]
 }

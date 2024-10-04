@@ -44,8 +44,6 @@
     "devDependencies": {
         "@mixmaxhq/prettier-config": "^1.0.0",
         "@mixmaxhq/semantic-release-config": "^2.0.3",
-        "@mixmaxhq/jest-coverage-config": "^2.2.3",
-        "@mixmaxhq/jest-junit-config": "^1.0.0",
         "@mixmaxhq/ts-config": "^1.2.1",
         "@types/node": "^22.7.4",
         "@types/jest": "^28.1.3",

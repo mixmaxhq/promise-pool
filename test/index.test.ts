@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { deferred, delay } from 'promise-callbacks';
 import PromisePool from '../src';
 

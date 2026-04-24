@@ -5,7 +5,7 @@
     "main": "./dist/node/index.js",
     "scripts": {
         "ci": "npm run lint && npm test",
-        "lint": "eslint . && tsc --noEmit",
+        "lint": "eslint --ext .js,.ts . && tsc --noEmit",
         "prepublishOnly": "npm run build && if [ \"$CI\" = '' ] && [ \"$npm_config_dry_run\" != true ]; then node -p 'JSON.parse(process.env.npm_package_config_manualPublishMessage)'; exit 1; fi",
         "test": "vitest run",
         "report": "vitest run --coverage",
